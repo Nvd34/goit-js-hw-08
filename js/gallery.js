@@ -113,4 +113,5 @@ function openModal(largeImageSrc) {
       window.removeEventListener("keydown", handleKeyDown);
     }
   }
+  
 }
