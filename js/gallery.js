@@ -66,7 +66,8 @@ const images = [
   },
 ];
 
-const galleryList = document.querySelector(".gallery");
+
+const galleryList = document.querySelector('.gallery');
 
 const galleryItems = images.map((image) => {
   return `
@@ -83,36 +84,38 @@ const galleryItems = images.map((image) => {
   `;
 });
 
-galleryList.innerHTML = galleryItems.join("");
+galleryList.innerHTML = galleryItems.join('');
 
-
-galleryList.addEventListener("click", handleGalleryClick);
+galleryList.addEventListener('click', handleGalleryClick);
 
 function handleGalleryClick(event) {
   event.preventDefault();
 
   const target = event.target;
-  if (target.nodeName === "IMG") {
+  if (target.nodeName === 'IMG') {
     const largeImageSrc = target.dataset.source;
-   
+
     openModal(largeImageSrc);
   }
 }
 
 function openModal(largeImageSrc) {
-  const instance = basicLightbox.create(`
-    <img src="${largeImageSrc}">
-  `);
-
-  instance.show();
-
-  window.addEventListener("keydown", handleKeyDown);
-
   function handleKeyDown(event) {
-    if (event.code === "Escape") {
+    if (event.code === 'Escape') {
       instance.close();
-      window.removeEventListener("keydown", handleKeyDown);
     }
   }
-  
+
+  const instance = basicLightbox.create(`
+    <img src="${largeImageSrc}">
+  `, {
+    onShow: () => {
+      window.addEventListener('keydown', handleKeyDown);
+    },
+    onClose: () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    },
+  });
+
+  instance.show();
 }
